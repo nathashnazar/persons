@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ResourceBundle;
+
 @RestController
 public class PersonController {
 
@@ -33,5 +35,25 @@ public class PersonController {
         existing.setMobile(person.getMobile());
         //TODO
         return ResponseEntity.ok(personRepository.save(existing));
+    }
+
+    @GetMapping("/persons/search/by-name")
+    public ResponseEntity searchByName(@RequestParam("name") String name){
+        return ResponseEntity.ok(personRepository.findByNameContainingIgnoreCase(name));
+    }
+
+    @GetMapping("/persons/search/by-mobile")
+    public ResponseEntity searchByMobile(@RequestParam("mobile") String mobile){
+        return ResponseEntity.ok(personRepository.findByMobile(mobile));
+    }
+
+    @GetMapping("/persons/search/by-mobile-any")
+    public ResponseEntity searchByMobileCointaining(@RequestParam("mobile") String mobile){
+        return ResponseEntity.ok(personRepository.findByMobileContainsIgnoreCase(mobile));
+    }
+
+    @GetMapping("/persons/search/by-mobile-starting")
+    public ResponseEntity searchByMobileStarting(@RequestParam("mobile")String mobile){
+        return ResponseEntity.ok(personRepository.findByMobileStartingWith(mobile));
     }
 }
